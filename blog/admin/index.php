@@ -173,8 +173,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['content']) || isset(
             if (!empty($_POST['content']) || !empty($image_urls)) {
                 $new_post = [
                     'id' => $post_id,
-                    'date' => date('Y-m-d'),
-                    'time' => date('H:i:s', strtotime('+2 hours')),
+                    'date' => $_POST['client_date'] ?? date('Y-m-d'),
+                    'time' => $_POST['client_time'] ?? date('H:i:s',),
                     'content' => $_POST['content'] ?? '',
                     'images' => $image_urls
                 ];
@@ -232,8 +232,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['content']) || isset(
             <form method="POST" class="post-form" enctype="multipart/form-data">
                 <textarea name="content" placeholder="Write your entry here..."></textarea>
                 <input type="file" name="images[]" accept="image/*" multiple>
+                <input type="hidden" name="client_date" id="client_date">
+                <input type="hidden" name="client_time" id="client_time">
                 <button type="submit">Post Entry</button>
             </form>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const form = document.querySelector('.post-form');
+                    form.addEventListener('submit', function() {
+                        const now = new Date();
+                        document.getElementById('client_date').value = now.toISOString().split('T')[0];
+                        document.getElementById('client_time').value = now.toTimeString().split(' ')[0];
+                    });
+                });
+            </script>
         <?php endif; ?>
     </div>
 </body>

@@ -1,0 +1,7 @@
+{
+    "require": {
+        "cheetaho/cheetaho-php": "dev-master"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

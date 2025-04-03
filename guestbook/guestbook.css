@@ -1,0 +1,138 @@
+/* Form Styling */
+body{
+  overflow: auto;
+}
+
+
+form{
+    display: flex;
+    font-size: 2.2rem;
+    flex-direction: column;
+    align-items: stretch; /* Align inputs and buttons consistently */
+    max-width: 100%; /* Increased width for the form */
+    margin: 0 auto; /* Center the form */
+  }
+
+label{
+    font-size: 2.2rem; /* Large label size */
+    color: green;
+  }
+  
+input[type="text"],
+textarea{
+    width: 100%; /* Full width inputs */
+    padding: 15px; /* Add padding */
+    font-size: 2rem; /* Larger font size */
+    color: lightgreen;
+    background-color: #333; /* Permanent gray background */
+    border: 2px solid #555; /* Subtle border for visibility */
+    border-radius: 0; /* Remove rounded edges */
+  }
+  
+textarea{
+    resize: none; /* Prevent resizing */
+    height: 120px; /* Set consistent height */
+    font-size: 2rem; /* Larger font size */
+  }
+  
+input[type="text"]:focus,
+textarea:focus{
+    outline: none;
+    border-color: green; /* Highlighted border on focus */
+    font-size: 2rem; /* Larger font size */
+  }
+  
+  /* Button Styling */
+button{
+    width: 100%; /* Full width buttons */
+    padding: 0px 0; /* Vertically consistent padding */
+    font-size: 1.8rem; /* Large button text */
+    color: green;
+    background-color: #111;
+    border: 0px ; /* Add subtle border for consistency */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Smooth hover effect */
+    padding: 5px;
+  }
+  
+button:hover{
+    color: white;
+    background-color: green;
+    border-radius: 0;
+  }
+  
+  /* Ensure All Buttons Are Uniform */
+button + button{
+    margin-top: 10px; /* Add spacing if multiple buttons are stacked */
+  }
+  
+  /* Form Container Styling */
+.middle-content{
+    width: 90%; /* Wider form container */
+    max-width: 800px; /* Limit the width on larger screens */
+    margin: 0 auto; /* Center horizontally */
+    padding: 20px;
+    background-color: black;
+    border: none; /* No border for cleaner look */
+    box-shadow: 0 0 20px 10px black; /* Slight shadow for depth */
+    text-align: center; /* Center content */
+  }
+  
+  /* Mobile Optimizations */
+  @media (min-width: 480px) {
+    form {
+      max-width: 400px;
+      gap: 15px;
+    }
+  
+    input[type="text"],
+    textarea {
+      font-size: 1.2rem;
+      padding: 12px;
+    }
+  
+    button {
+      font-size: 1.5rem;
+      padding: 15px;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    form {
+      max-width: 600px;
+      gap: 20px;
+    }
+  
+    input[type="text"],
+    textarea {
+      font-size: 1.5rem;
+      padding: 25px;
+    }
+  
+    button {
+      font-size: 2rem;
+      padding: 10px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    form {
+      max-width: 700px;
+    }
+  
+    input[type="text"],
+    textarea {
+      font-size: 1.8rem;
+      padding: 18px;
+    }
+  
+    button {
+      font-size: 2.4rem;
+      padding: 30px 0;
+    }
+  }
+  
+  .middle-content {
+    width: 95%; /* Adjust container width for larger screens */
+  }
+  

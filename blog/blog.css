@@ -1,0 +1,271 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow-y: auto !important;
+    padding-top: 80px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: black;
+    z-index: 9999;
+}
+
+.blog-container {
+    flex: 1;
+    width: 100%;
+    padding-top: 2rem;
+    margin-top: 80px;
+    position: relative;
+    z-index: 1;
+}
+
+.blog-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 90%;
+    overflow-y: auto;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    border-radius: 8px;
+    max-width: 100%;
+    box-shadow: 0px 0px 40px 20px rgb(0, 0, 0);
+    background-color: rgb(0, 0, 0);
+    margin-top: 20px;
+}
+
+.blog-header {
+    width: 100%;
+    text-align: center;
+    background-color: black;
+    z-index: 3;
+    text-align: center;
+    padding: 0px;
+    border-radius: 0px;
+    max-width: 100%;
+    box-shadow: 0px 0px 40px 20px rgb(0, 0, 0);
+    background-color: rgb(0, 0, 0);
+    font-size: 3rem;
+    position: relative;
+    z-index: 1;
+}
+
+.blog-header h1 {
+    margin: 0;
+    color: green;
+}
+
+p{
+    font-size: 0.5rem;
+}
+
+.blog-header p {
+    font-size: 1rem;
+    color: #666;
+    margin-top: 0;
+}
+
+.blog-preview {
+    margin-bottom: 2rem;
+    position: relative;
+    padding: 0rem;
+    z-index: 2;
+    text-align: left;
+    border-radius: 8px;
+    max-width: 100%;
+    box-shadow: 0px 0px 40px 20px black;
+    background-color: black;
+}
+
+.blog-preview h2 {
+    font-size: 2rem;
+}
+
+.post-meta {
+    color: #666;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.5rem;
+}
+
+.post-content {
+    line-height: 2;
+    font-size: 2rem;
+    width: 100%;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.admin-form, .post-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 600px;
+    margin: 2rem auto;
+}
+
+.admin-form input,
+.post-form input,
+.post-form textarea {
+    padding: 0.5rem;
+    background: #111;
+    border: 1px solid #333;
+    color: green;
+    font-family: 'VT323', monospace;
+}
+
+.post-form textarea {
+    min-height: 400px;
+    width: 100%;
+    font-size: 1.2rem;
+    padding: 1rem;
+    background: #111;
+    border: 1px solid #333;
+    color: green;
+    font-family: 'VT323', monospace;
+    resize: vertical;
+}
+
+.post-form input {
+    width: 100%;
+    font-size: 1.2rem;
+    padding: 0.8rem;
+}
+
+.admin-form button,
+.post-form button {
+    padding: 0.5rem;
+    background: green;
+    color: black;
+    border: none;
+    cursor: pointer;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.error-message {
+    color: red;
+    background-color: black;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid red;
+    border-radius: 4px;
+}
+
+.success-message {
+    color: green;
+    background-color: black;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid green;
+    border-radius: 4px;
+}
+
+.admin-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: #333;
+    font-family: 'VT323', monospace;
+    font-size: 1rem;
+    cursor: pointer;
+    z-index: 9998;
+    text-decoration: none;
+}
+
+.admin-button:hover {
+    color: green;
+}
+
+.post-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.post-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.post-image:hover {
+    transform: scale(1.02);
+}
+
+.lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 10000;
+    cursor: pointer;
+}
+
+.lightbox img {
+    max-width: 90%;
+    max-height: 90vh;
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.lightbox.active {
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .blog-content {
+        width: 80%;
+    }
+}
+
+@media (max-width: 768px) {
+    .blog-content {
+        width: 90%;
+    }
+
+    .navbar {
+        position: fixed !important;
+        top: auto !important;
+        bottom: 0 !important;
+        left: 0;
+        width: 100%;
+        z-index: 9999 !important;
+    }
+
+    body {
+        padding-top: 20px;
+        padding-bottom: 100px;
+    }
+
+    .blog-container {
+        margin-top: 0;
+    }
+
+    .admin-button {
+        bottom: 80px;
+    }
+}

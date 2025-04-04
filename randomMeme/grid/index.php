@@ -40,7 +40,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
         let page = 0;
         let loading = false;
         let allVideos = [];
-        const videosPerPage = 8; // Reduced from 16 to load fewer videos at once
+        const videosPerPage = 9; // Reduced from 16 to load fewer videos at once
         let observer;
         let loadingTimeout;
 
@@ -68,40 +68,18 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
             container.className = 'video-grid-item';
             
             const video = document.createElement('video');
-            video.preload = 'none';
+            video.preload = 'metadata';
             video.muted = true;
             video.loop = true;
             video.playbackRate = 1.0;
+            video.src = `/randomMeme/memes/${videoSrc}`;
             
-            // Add loading state indicator
-            const loadingIndicator = document.createElement('div');
-            loadingIndicator.className = 'video-loading';
-            loadingIndicator.textContent = 'Loading...';
-            container.appendChild(loadingIndicator);
-
-            // Load video source after a delay to prevent too many simultaneous requests
-            setTimeout(() => {
-                video.src = `/randomMeme/memes/${videoSrc}`;
-                video.addEventListener('loadedmetadata', () => {
-                    loadingIndicator.remove();
-                });
-                video.addEventListener('error', () => {
-                    loadingIndicator.textContent = 'Error loading video';
-                });
-            }, Math.random() * 1000); // Stagger loading
-
-            // Add hover effect with debouncing
-            let playTimeout;
+            // Add hover effect
             container.addEventListener('mouseenter', () => {
-                clearTimeout(playTimeout);
-                playTimeout = setTimeout(() => {
-                    video.preload = 'auto';
-                    video.play().catch(() => {});
-                }, 100);
+                video.play().catch(() => {});
             });
 
             container.addEventListener('mouseleave', () => {
-                clearTimeout(playTimeout);
                 video.pause();
                 video.currentTime = 0;
             });

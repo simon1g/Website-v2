@@ -40,13 +40,20 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
         let page = 0;
         let loading = false;
         let allVideos = [];
-        const videosPerPage = 16;
+        const videosPerPage = 8; // Reduced from 16 to load fewer videos at once
         let observer;
+        let loadingTimeout;
 
         async function fetchVideos() {
-            const response = await fetch('/randomMeme/memes.json');
-            allVideos = await response.json();
-            shuffleArray(allVideos); // Randomize initial order
+            try {
+                const response = await fetch('/randomMeme/memes.json');
+                if (!response.ok) throw new Error('Failed to fetch videos');
+                allVideos = await response.json();
+                shuffleArray(allVideos);
+            } catch (error) {
+                console.error('Error loading videos:', error);
+                document.getElementById('loading').textContent = 'Error loading videos. Please refresh.';
+            }
         }
 
         function shuffleArray(array) {
@@ -61,25 +68,44 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
             container.className = 'video-grid-item';
             
             const video = document.createElement('video');
-            video.src = `/randomMeme/memes/${videoSrc}`;
-            video.preload = 'none'; // Don't preload until needed
+            video.preload = 'none';
             video.muted = true;
             video.loop = true;
+            video.playbackRate = 1.0;
+            
+            // Add loading state indicator
+            const loadingIndicator = document.createElement('div');
+            loadingIndicator.className = 'video-loading';
+            loadingIndicator.textContent = 'Loading...';
+            container.appendChild(loadingIndicator);
 
-            // Lazy loading with Intersection Observer
-            observer.observe(container);
+            // Load video source after a delay to prevent too many simultaneous requests
+            setTimeout(() => {
+                video.src = `/randomMeme/memes/${videoSrc}`;
+                video.addEventListener('loadedmetadata', () => {
+                    loadingIndicator.remove();
+                });
+                video.addEventListener('error', () => {
+                    loadingIndicator.textContent = 'Error loading video';
+                });
+            }, Math.random() * 1000); // Stagger loading
 
-            // Add hover effect
+            // Add hover effect with debouncing
+            let playTimeout;
             container.addEventListener('mouseenter', () => {
-                video.preload = 'auto';
-                video.play().catch(() => {});
+                clearTimeout(playTimeout);
+                playTimeout = setTimeout(() => {
+                    video.preload = 'auto';
+                    video.play().catch(() => {});
+                }, 100);
             });
+
             container.addEventListener('mouseleave', () => {
+                clearTimeout(playTimeout);
                 video.pause();
                 video.currentTime = 0;
             });
 
-            // Update click handler for modal
             container.addEventListener('click', () => {
                 openVideoInModal(videoSrc);
             });
@@ -132,22 +158,35 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
             if (loading) return;
             loading = true;
             
-            const start = page * videosPerPage;
-            const end = start + videosPerPage;
-            const videosToLoad = allVideos.slice(start, end);
-
-            if (videosToLoad.length > 0) {
-                const grid = document.getElementById('videoGrid');
-                videosToLoad.forEach(video => {
-                    grid.appendChild(createVideoElement(video));
-                });
-                page++;
-            }
-
-            document.getElementById('loading').style.display = 
-                end >= allVideos.length ? 'none' : 'block';
+            // Clear previous timeout if exists
+            clearTimeout(loadingTimeout);
             
-            loading = false;
+            try {
+                const start = page * videosPerPage;
+                const end = start + videosPerPage;
+                const videosToLoad = allVideos.slice(start, end);
+
+                if (videosToLoad.length > 0) {
+                    const grid = document.getElementById('videoGrid');
+                    // Load videos with a slight delay between each
+                    for (let i = 0; i < videosToLoad.length; i++) {
+                        setTimeout(() => {
+                            grid.appendChild(createVideoElement(videosToLoad[i]));
+                        }, i * 100);
+                    }
+                    page++;
+                }
+
+                document.getElementById('loading').style.display = 
+                    end >= allVideos.length ? 'none' : 'block';
+            } catch (error) {
+                console.error('Error loading more videos:', error);
+            } finally {
+                // Add delay before allowing next load
+                loadingTimeout = setTimeout(() => {
+                    loading = false;
+                }, 500);
+            }
         }
 
         // Initialize Intersection Observer
@@ -166,16 +205,30 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
             });
         }
 
+        // Throttle scroll event
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            }
+        }
+
         // Update infinite scroll detection
         function setupInfiniteScroll() {
-            window.addEventListener('scroll', () => {
+            window.addEventListener('scroll', throttle(() => {
                 if (loading) return;
                 
                 const {scrollTop, scrollHeight, clientHeight} = document.documentElement;
-                if (scrollTop + clientHeight >= scrollHeight - 100) {
+                if (scrollTop + clientHeight >= scrollHeight - 600) {
                     loadMoreVideos();
                 }
-            });
+            }, 250));
         }
 
         // Initialize

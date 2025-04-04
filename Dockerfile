@@ -1,9 +1,17 @@
 FROM php:apache
 
-# Install GD dependencies and extension
+# Install dependencies
 RUN apt-get update && apt-get install -y \
-    libfreetype6-dev \
-    libjpeg62-turbo-dev \
-    libpng-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd
+    unzip \
+    git \
+    libzip-dev \
+    && docker-php-ext-install zip
+
+# Install Composer globally
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set working directory
+WORKDIR /var/www/html
+
+# Copy your PHP code
+COPY . .

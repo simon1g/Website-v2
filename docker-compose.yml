@@ -12,5 +12,6 @@ services:
       - /media/windows/FunnyVids/best:/var/www/html/randomMeme/memes  # This is where your media (videos/images) are located
     environment:
       - APACHE_DOCUMENT_ROOT=/var/www/html  # Ensure Apache knows where to look for your files
+      - CHEETAHO_API_KEY=your_real_cheetaho_api_key
     restart: unless-stopped
     entrypoint: ["/bin/sh", "-c", "php /var/www/html/update_memes_list.php && apache2-foreground"]

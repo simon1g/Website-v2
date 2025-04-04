@@ -2,11 +2,6 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 session_start();
 
-// Add this near the top of the file after session_start():
-if (!extension_loaded('gd')) {
-    error_log("Warning: GD library is not installed. Images will not be resized.");
-}
-
 // Clean up paths using consistent directory separators
 $base_dir = dirname(__DIR__); // Get parent directory path
 $error_message = '';
@@ -59,75 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password'])) {
     }
 }
 
-// Add this function before the form handling code
-function resizeImage($sourcePath, $destinationPath, $maxWidth = 1920, $maxHeight = 1080, $quality = 80) {
-    // Check if GD is available
-    if (!extension_loaded('gd')) {
-        // If GD is not available, just copy the file
-        if (copy($sourcePath, $destinationPath)) {
-            return true;
-        }
-        return false;
-    }
-
-    // Rest of the resizeImage function
-    list($origWidth, $origHeight, $type) = getimagesize($sourcePath);
-    
-    // Don't resize if image is smaller than max dimensions
-    if ($origWidth <= $maxWidth && $origHeight <= $maxHeight) {
-        return copy($sourcePath, $destinationPath);
-    }
-    
-    // Original resizeImage code continues here...
-    // Calculate new dimensions while maintaining aspect ratio
-    $ratio = min($maxWidth / $origWidth, $maxHeight / $origHeight);
-    $newWidth = round($origWidth * $ratio);
-    $newHeight = round($origHeight * $ratio);
-    
-    // Create new image
-    $newImage = imagecreatetruecolor($newWidth, $newHeight);
-    
-    // Handle different image types
-    switch ($type) {
-        case IMAGETYPE_JPEG:
-            $source = imagecreatefromjpeg($sourcePath);
-            break;
-        case IMAGETYPE_PNG:
-            $source = imagecreatefrompng($sourcePath);
-            // Preserve transparency
-            imagealphablending($newImage, false);
-            imagesavealpha($newImage, true);
-            break;
-        case IMAGETYPE_GIF:
-            $source = imagecreatefromgif($sourcePath);
-            break;
-        default:
-            return false;
-    }
-    
-    // Resize
-    imagecopyresampled($newImage, $source, 0, 0, 0, 0, $newWidth, $newHeight, $origWidth, $origHeight);
-    
-    // Save
-    switch ($type) {
-        case IMAGETYPE_JPEG:
-            imagejpeg($newImage, $destinationPath, $quality);
-            break;
-        case IMAGETYPE_PNG:
-            imagepng($newImage, $destinationPath, 9);
-            break;
-        case IMAGETYPE_GIF:
-            imagegif($newImage, $destinationPath);
-            break;
-    }
-    
-    // Clean up
-    imagedestroy($newImage);
-    imagedestroy($source);
-    
-    return true;
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['content']) || isset($_FILES['images']))) {
     if (!$_SESSION['admin']) {
         $error_message = 'Unauthorized';
@@ -143,26 +69,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['content']) || isset(
                         $filename = uniqid() . '_' . preg_replace("/[^a-zA-Z0-9.]/", "_", $_FILES['images']['name'][$key]);
                         $filepath = $images_dir . '/' . $filename;
                         
-                        // Debug logging
-                        error_log("Full upload path: " . $filepath);
-                        
                         // Verify MIME type
                         $finfo = finfo_open(FILEINFO_MIME_TYPE);
                         $mime_type = finfo_file($finfo, $tmp_name);
                         finfo_close($finfo);
                         
                         if (strpos($mime_type, 'image/') === 0) {
-                            // Resize and save the image
-                            if (resizeImage($tmp_name, $filepath)) {
+                            if (move_uploaded_file($tmp_name, $filepath)) {
                                 chmod($filepath, 0644);
-                                // Set proper ownership on Linux
-                                @chown($filepath, 'www-data');
-                                @chgrp($filepath, 'www-data');
-                                
                                 $image_urls[] = '/blog/images/' . $filename;
                             } else {
-                                error_log("Failed to resize image: " . $filename);
-                                throw new Exception('Failed to resize image: ' . $filename);
+                                throw new Exception('Failed to move uploaded image: ' . $filename);
                             }
                         }
                     }
@@ -171,10 +88,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['content']) || isset(
             
             // Only create post if there's content or images
             if (!empty($_POST['content']) || !empty($image_urls)) {
+                // Get client date and time
+                $date = $_POST['client_date'];
+                $time = $_POST['client_time'];
+                
+                // Validate date format
+                if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
+                    throw new Exception('Invalid date format');
+                }
+                // Validate time format
+                if (!preg_match('/^\d{2}:\d{2}:\d{2}$/', $time)) {
+                    throw new Exception('Invalid time format');
+                }
+                
                 $new_post = [
                     'id' => $post_id,
-                    'date' => $_POST['client_date'] ?? date('Y-m-d'),
-                    'time' => $_POST['client_time'] ?? date('H:i:s',),
+                    'date' => $date,
+                    'time' => $time,
                     'content' => $_POST['content'] ?? '',
                     'images' => $image_urls
                 ];
@@ -232,17 +162,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['content']) || isset(
             <form method="POST" class="post-form" enctype="multipart/form-data">
                 <textarea name="content" placeholder="Write your entry here..."></textarea>
                 <input type="file" name="images[]" accept="image/*" multiple>
-                <input type="hidden" name="client_date" id="client_date">
-                <input type="hidden" name="client_time" id="client_time">
+                <input type="hidden" name="client_date" id="client_date" required>
+                <input type="hidden" name="client_time" id="client_time" required>
                 <button type="submit">Post Entry</button>
             </form>
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     const form = document.querySelector('.post-form');
-                    form.addEventListener('submit', function() {
+                    form.addEventListener('submit', function(e) {
                         const now = new Date();
-                        document.getElementById('client_date').value = now.toISOString().split('T')[0];
-                        document.getElementById('client_time').value = now.toTimeString().split(' ')[0];
+                        const date = now.toISOString().split('T')[0];
+                        const time = now.toTimeString().split(' ')[0];
+                        
+                        const dateField = document.getElementById('client_date');
+                        const timeField = document.getElementById('client_time');
+                        
+                        if (!dateField.value) dateField.value = date;
+                        if (!timeField.value) timeField.value = time;
                     });
                 });
             </script>

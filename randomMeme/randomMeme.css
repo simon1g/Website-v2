@@ -1,64 +1,116 @@
-video {
-    max-height: calc(100vh - 100px); /* Adjusts for navbar height */
-    object-fit: contain;
-    display: block;
-    }
-    .video-size video
-    {
-      width: 100%;
-      height: 500px;
-    }
-    
-    .share-link{
-      padding: 10px;
-    }
-
-@media (max-width: 768px) {
-        .middle-content {
-            width: 100%;
-            padding: 20px;
-            margin-bottom: 20%;
-        }
-      
-        .ascii-links a {
-            font-size: 1.2em;
-            padding: 8px 15px;
-        }
-        .video-size video
-        {
-          width: 100%;
-          height: 500px;
-        }
-        
-      }
-
-@media (min-width: 1024px) {
-        .video-size video
-        {
-        width: 100%;
-        height: 600px;
-        }
-    }
-
-.button-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 2rem;
+body{
+  min-height: 110vh
 }
 
+/* Removed the global 'video' selector as it might conflict
+   and '.video-size video' is more specific. If you needed
+   a global style, re-add it carefully. */
+
+   .middle-content {
+    /* Reduced padding-top significantly to bring content closer to the navbar */
+    /* Adjust this value (e.g., 10px, 20px) based on your actual navbar height */
+    /* and desired spacing */
+    padding-top: 20px;
+    width: 100%;
+    max-width: 1200px;  /* Limit max width on large screens */
+    margin: 0 auto;     /* Center content */
+    padding-left: 15px;
+    padding-right: 15px;
+    /* padding-bottom is needed if you remove margin-bottom from mobile */
+    padding-bottom: 20px; /* Add some space at the very bottom */
+}
+
+.video-size {
+    width: 100%;
+    max-width: 1000px;  /* Limit video container width */
+    margin: 0 auto;     /* Center video container */
+    /* No margin-top needed here, handled by .middle-content padding-top */
+}
+
+.video-size video {
+    width: 100%;
+    height: auto;       /* Let height adjust automatically */
+    /* Consider adjusting max-height if needed after changing padding */
+    max-height: 80vh;   /* Prevent video from being too tall */
+    object-fit: contain;
+    display: block; /* Ensures it takes block-level space */
+    /* Added vertical-align to prevent potential bottom space issues */
+    vertical-align: middle;
+}
+
+.share-link {
+    padding: 10px; /* This seems like specific padding for one button? Kept it. */
+}
+
+/* Button Container - Already correctly set for row layout */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Button Styles */
 .share-link, .refresh-button, .grid-button {
-    padding: 0.5rem 1rem;
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
     color: green;
     text-decoration: none;
-    border: 1px solid green;
-    border-radius: 4px;
-    cursor: pointer;
+    border: none;
     transition: all 0.3s ease;
+    background: none; /* Ensure no default background */
 }
 
 .share-link:hover, .refresh-button:hover, .grid-button:hover {
-    background: green;
-    color: black;
+    /* background: none; is already default, hover changes color */
+    color: lightgreen;
+}
+
+
+/* --- Media Queries --- */
+
+@media (max-width: 768px) {
+    .middle-content {
+        /* Reduced top padding for mobile too */
+        padding-top: 15px;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-bottom: 15px; /* Ensure bottom padding on mobile */
+        /* width: 100%; is default for block elements */
+        /* Removed margin-bottom: 20%; use padding-bottom instead if needed */
+    }
+
+    /* .ascii-links a { */ /* This rule was in your original but not related to video/buttons */
+        /* font-size: 1.2em; */
+        /* padding: 8px 15px; */
+    /* } */
+
+    .video-size video {
+        /* Using max-height is often better than fixed height for responsiveness */
+        max-height: 70vh;  /* Slightly smaller max-height on mobile */
+        /* Consider removing fixed height: 500px unless strictly necessary */
+        /* height: 500px; */
+        width: 100%;
+    }
+
+    .button-container {
+        gap: 1rem;  /* Smaller gap on mobile */
+        margin-top: 1.5rem; /* Slightly less space above buttons on mobile */
+    }
+
+    .share-link, .refresh-button, .grid-button {
+        font-size: 0.9em;  /* Slightly smaller text on mobile */
+        padding: 0.4rem 0.8rem; /* Slightly smaller padding */
+    }
+}
+
+@media (  width: 1024px) {
+    .video-size video {
+        /* Consider if fixed height is really needed. max-height might be better */
+        /* height: 600px; */
+        /* You might want to increase max-height on larger screens instead */
+        /* max-height: 75vh; or similar */
+        width: 100%; /* Ensure width is still 100% */
+    }
 }

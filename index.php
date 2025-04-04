@@ -20,10 +20,16 @@
     <div class="navbar">
         <?php include(get_site_path('/navbar.html')); ?>
     </div>
-    <div class="middle-content">
-        <h1><?php echo ascii_border("Simon1G"); ?></h1>
-        <p>half bake webpage on the world wide web</p>
-        <div align='center'><a href='https://www.free-website-hit-counter.com'><img src='https://www.free-website-hit-counter.com/zc.php?d=9&id=8058&s=1' border='0' alt='Free Website Hit Counter'></a><br /><small><a href='https://www.free-website-hit-counter.com' title="Free Website Hit Counter"></a></small></div>
+        <div class="middle-content">
+            <h1><?php echo ascii_border("Simon1G"); ?></h1>
+            <p>half bake webpage on the world wide web</p>
+            <div align='center'>
+                <a href='https://www.free-website-hit-counter.com'><img src='https://www.free-website-hit-counter.com/zc.php?d=9&id=8058&s=1' border='0' alt='Free Website Hit Counter'></a>
+                <br />
+            <small>
+                <a href='https://www.free-website-hit-counter.com' title="Free Website Hit Counter"></a>
+            </small>
+        </div>
     </div>
 </body>
 </html>

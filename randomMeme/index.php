@@ -44,6 +44,18 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
         }
 
         async function loadNewVideo() {
+            // Get video from URL parameter if exists
+            const urlParams = new URLSearchParams(window.location.search);
+            const videoParam = urlParams.get('video');
+            
+            if (videoParam) {
+                const videoElement = document.querySelector('video');
+                videoElement.src = `/randomMeme/memes/${videoParam}`;
+                videoElement.load();
+                videoElement.play();
+                return;
+            }
+
             if (videoQueue.length === 0) {
                 const allVideos = await fetchVideos();
                 videoQueue = allVideos.filter(video => !seenVideos.includes(video));

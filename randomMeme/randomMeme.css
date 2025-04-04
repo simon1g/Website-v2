@@ -34,8 +34,6 @@ body{
     max-height: 80vh;   /* Prevent video from being too tall */
     object-fit: contain;
     display: block; /* Ensures it takes block-level space */
-    /* Added vertical-align to prevent potential bottom space issues */
-    vertical-align: middle;
 }
 
 .share-link {
@@ -64,7 +62,7 @@ body{
 
 .share-link:hover, .refresh-button:hover, .grid-button:hover {
     /* background: none; is already default, hover changes color */
-    color: lightgreen;
+    color: rgb(255, 255, 255);
 }
 
 

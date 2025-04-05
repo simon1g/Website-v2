@@ -85,21 +85,21 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 
         function copyToClipboard() {
             const videoSrc = document.querySelector('video').src;
-            const tempInput = document.createElement('input');
-            tempInput.value = videoSrc;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
+            const videoName = videoSrc.split('/').pop(); // Get just the filename
+            const shareUrl = `${window.location.origin}/randomMeme/memes/${videoName}`;
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                const shareLink = document.querySelector('.share-link');
+                shareLink.textContent = "Copied!";
+                shareLink.classList.add('success');
 
-            const shareLink = document.querySelector('.share-link');
-            shareLink.textContent = "Copied!";
-            shareLink.classList.add('success');
-
-            setTimeout(() => {
-                shareLink.textContent = "Share Video Link";
-                shareLink.classList.remove('success');
-            }, 2000);
+                setTimeout(() => {
+                    shareLink.textContent = "Share Video Link";
+                    shareLink.classList.remove('success');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy link: ', err);
+                alert('Failed to copy link.');
+            });
         }
 
         document.addEventListener('DOMContentLoaded', () => {

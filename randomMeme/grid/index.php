@@ -6,7 +6,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meme Grid - simon1g</title>
+    <title>simon1g</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
@@ -318,31 +318,20 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 
         function shareVideo() {
             const modalVideo = document.getElementById('modalVideo');
-            const videoUrl = window.location.href; // Share the URL with the ?video= parameter
-
-            if (navigator.share) { // Use Web Share API if available
-                 navigator.share({
-                     title: 'Check out this meme!',
-                     text: 'Found this cool meme video:',
-                     url: videoUrl,
-                 })
-                 .then(() => console.log('Successful share'))
-                 .catch((error) => console.log('Error sharing:', error));
-            } else { // Fallback to clipboard
-                 navigator.clipboard.writeText(videoUrl).then(() => {
-                    const shareBtn = document.querySelector('.modal-share-button');
-                    const originalText = shareBtn.textContent;
-                    shareBtn.textContent = 'Link Copied!';
-                    setTimeout(() => {
-                        shareBtn.textContent = originalText;
-                    }, 2000);
-                 }).catch(err => {
-                     console.error('Failed to copy link: ', err);
-                     alert('Failed to copy link.');
-                 });
-            }
+            const videoName = modalVideo.src.split('/').pop(); // Get just the filename
+            const shareUrl = `${window.location.origin}/randomMeme/memes/${videoName}`;
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                const shareBtn = document.querySelector('.modal-share-button');
+                const originalText = shareBtn.textContent;
+                shareBtn.textContent = 'Link Copied!';
+                setTimeout(() => {
+                    shareBtn.textContent = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy link: ', err);
+                alert('Failed to copy link.');
+            });
         }
-
 
         document.addEventListener('DOMContentLoaded', init);
     </script>

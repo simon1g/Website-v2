@@ -22,6 +22,7 @@ body {
     width: 100%;
     max-width: 1000px;  /* Limit video container width */
     margin: 0 auto;     /* Center video container */
+    overflow: hidden;  /* Add sharp edges to main video */
 }
 
 .video-size video {
@@ -123,6 +124,7 @@ body {
     width: 100%;
     position: relative;
     aspect-ratio: 16/9;
+    overflow: hidden;  /* Add sharp edges to grid videos */
 }
 
 .video-grid-item video {

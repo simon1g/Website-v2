@@ -203,6 +203,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['content']) || isset(
         }
     }
 }
+
+// Handle delete last post
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete_last') {
+    if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
+        $error_message = 'Unauthorized: Please log in.';
+    } else {
+        try {
+            $files = glob($posts_dir . '/*.json');
+            if (!empty($files)) {
+                // Sort files by modification time, newest first
+                usort($files, function($a, $b) {
+                    return filemtime($b) - filemtime($a);
+                });
+                
+                $latest_file = $files[0];
+                if (unlink($latest_file)) {
+                    header('Location: /blog/');
+                    exit;
+                } else {
+                    throw new Exception('Failed to delete the post file.');
+                }
+            } else {
+                $error_message = 'No posts to delete.';
+            }
+        } catch (Exception $e) {
+            $error_message = 'Error deleting post: ' . $e->getMessage();
+            error_log($error_message);
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -217,6 +247,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['content']) || isset(
     <link rel="icon" href="/icon.ico">
     <link rel="stylesheet" href="/blog/blog.css">
     <script src="/blog/js/compression.js"></script>
+    <script>
+    function confirmDelete() {
+        return confirm('Are you sure you want to delete the last post? This action cannot be undone.');
+    }
+    </script>
 </head>
 <body>
     <div class="navbar">
@@ -256,7 +291,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['content']) || isset(
 
                 <button type="submit">Post Entry</button>
             </form>
-             <!-- Removed the JavaScript that sets client date/time -->
+
+            <form method="POST" style="margin-top: 20px;" onsubmit="return confirmDelete();">
+                <input type="hidden" name="action" value="delete_last">
+                <button type="submit" style="background-color: #ff4444;">Delete Last Post</button>
+            </form>
         <?php endif; ?>
     </div>
 </body>

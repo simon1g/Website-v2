@@ -31,23 +31,16 @@ function createPostElement(post) {
     content.className = 'post-content';
     content.innerHTML = post.content.replace(/\r\n|\n/g, '<br>');
 
-    // Add images if they exist
     if (post.images && post.images.length > 0) {
         const imageContainer = document.createElement('div');
         imageContainer.className = 'post-images';
         
         post.images.forEach(imageUrl => {
-            console.log('Loading image:', imageUrl); // Debug log
             const img = document.createElement('img');
             img.src = imageUrl;
             img.className = 'post-image';
-            // Add error handling for images
             img.onerror = () => {
-                console.error('Failed to load image:', imageUrl);
                 img.style.display = 'none';
-            };
-            img.onload = () => {
-                console.log('Image loaded successfully:', imageUrl);
             };
             imageContainer.appendChild(img);
         });
@@ -96,4 +89,4 @@ function handleScroll() {
 }
 
 window.addEventListener('scroll', handleScroll);
-loadPosts(); // Load initial posts
+loadPosts();

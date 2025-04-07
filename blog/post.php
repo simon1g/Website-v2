@@ -2,7 +2,6 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 session_start();
 
-// Redirect to blog index if not logged in
 if (!isset($_SESSION['blog_access']) || !$_SESSION['blog_access']) {
     header('Location: /blog/');
     exit;
@@ -37,7 +36,6 @@ if (!isset($_SESSION['blog_access']) || !$_SESSION['blog_access']) {
             
             if (file_exists($post_file)) {
                 $content = json_decode(file_get_contents($post_file), true);
-                // Echo title if it exists, otherwise just show date/time
                 if (!empty($content['title'])) {
                     echo '<h1>' . htmlspecialchars($content['title']) . '</h1>';
                 }
@@ -49,19 +47,16 @@ if (!isset($_SESSION['blog_access']) || !$_SESSION['blog_access']) {
         <div class="blog-content">
             <?php
             if (file_exists($post_file)) {
-                // Format the date and time
                 $date = $content['date'] ?? '';
                 $time = $content['time'] ?? '';
                 if ($date && $time) {
                     echo '<div class="post-meta">Posted on: ' . htmlspecialchars($date) . ' at ' . htmlspecialchars($time) . '</div>';
                 }
                 
-                // Display content and images
                 if (!empty($content['content'])) {
                     echo '<div class="post-content">' . nl2br(htmlspecialchars($content['content'])) . '</div>';
                 }
                 
-                // Display images if they exist
                 if (!empty($content['images'])) {
                     echo '<div class="post-images">';
                     foreach ($content['images'] as $image) {

@@ -44,7 +44,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
         }
 
         async function loadNewVideo() {
-            // Get video from URL parameter if exists
             const urlParams = new URLSearchParams(window.location.search);
             const videoParam = urlParams.get('video');
             
@@ -85,7 +84,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
 
         function copyToClipboard() {
             const videoSrc = document.querySelector('video').src;
-            const videoName = videoSrc.split('/').pop(); // Get just the filename
+            const videoName = videoSrc.split('/').pop();
             const shareUrl = `${window.location.origin}/randomMeme/memes/${videoName}`;
             navigator.clipboard.writeText(shareUrl).then(() => {
                 const shareLink = document.querySelector('.share-link');

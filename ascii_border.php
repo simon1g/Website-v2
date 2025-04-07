@@ -3,8 +3,7 @@ function ascii_border($text) {
     $lines = explode("\n", $text);
     $maxLength = max(array_map('strlen', $lines));
     
-    // Add extra spaces to pad the content for a better fit
-    $padding = 6; // Adjust this padding as needed for the button size
+    $padding = 6; 
     $topBorder = '+' . str_repeat('-', $maxLength + $padding) . "+\n";
     $asciiBox = $topBorder;
     

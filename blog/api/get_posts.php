@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Check if user is logged in
 if (!isset($_SESSION['blog_access']) || !$_SESSION['blog_access']) {
     http_response_code(401);
     echo json_encode(['error' => 'Unauthorized']);
@@ -17,7 +16,6 @@ $start = $page * $per_page;
 
 $files = glob($posts_dir . '*.json');
 
-// Load all posts with their dates for sorting
 $posts = [];
 foreach ($files as $file) {
     $content = json_decode(file_get_contents($file), true);
@@ -26,18 +24,16 @@ foreach ($files as $file) {
     }
 }
 
-// Sort posts by date and time using DateTime objects
 usort($posts, function($a, $b) {
     $datetime_a = DateTime::createFromFormat('Y-m-d H:i:s', $a['date'] . ' ' . $a['time']);
     $datetime_b = DateTime::createFromFormat('Y-m-d H:i:s', $b['date'] . ' ' . $b['time']);
     
     if ($datetime_a && $datetime_b) {
-        return $datetime_b <=> $datetime_a; // Descending order (newest first)
+        return $datetime_b <=> $datetime_a;
     }
     return 0;
 });
 
-// Return paginated results
 $paginated_posts = array_slice($posts, $start, $per_page);
 
 echo json_encode($paginated_posts);

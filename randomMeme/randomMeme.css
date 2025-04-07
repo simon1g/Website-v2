@@ -1,43 +1,38 @@
 body {
     min-height: 100vh;
     overflow-y: auto !important;
-    padding-bottom: 60px; /* Space for mobile navbar */
+    padding-bottom: 60px;
 }
 
-/* Removed the global 'video' selector as it might conflict
-   and '.video-size video' is more specific. If you needed
-   a global style, re-add it carefully. */
-
 .middle-content {
-    padding-top: 80px; /* Space for fixed navbar */
+    padding-top: 80px;
     width: 100%;
-    max-width: 1200px;  /* Limit max width on large screens */
-    margin: 0 auto;     /* Center content */
+    max-width: 1200px;
+    margin: 0 auto;
     padding-left: 15px;
     padding-right: 15px;
-    padding-bottom: 20px; /* Add some space at the very bottom */
+    padding-bottom: 20px;
 }
 
 .video-size {
     width: 100%;
-    max-width: 1000px;  /* Limit video container width */
-    margin: 0 auto;     /* Center video container */
-    overflow: hidden;  /* Add sharp edges to main video */
+    max-width: 1000px;
+    margin: 0 auto;
+    overflow: hidden;
 }
 
 .video-size video {
     width: 100%;
-    height: auto;       /* Let height adjust automatically */
-    max-height: 80vh;   /* Prevent video from being too tall */
+    height: auto;
+    max-height: 80vh;
     object-fit: contain;
-    display: block; /* Ensures it takes block-level space */
+    display: block;
 }
 
 .share-link {
-    padding: 10px; /* This seems like specific padding for one button? Kept it. */
+    padding: 10px;
 }
 
-/* Button Container - Already correctly set for row layout */
 .button-container {
     display: flex;
     justify-content: center;
@@ -45,7 +40,6 @@ body {
     margin-top: 20px;
 }
 
-/* Button Styles */
 .share-link, .refresh-button, .grid-button {
     display: inline-block;
     padding: 10px 20px;
@@ -54,26 +48,24 @@ body {
     text-decoration: none;
     border: none;
     transition: all 0.3s ease;
-    background: none; /* Ensure no default background */
+    background: none;
 }
 
 .share-link:hover, .refresh-button:hover, .grid-button:hover {
     color: rgb(255, 255, 255);
 }
 
-/* --- Media Queries --- */
-
 @media (max-width: 768px) {
     body {
         padding-top: 0;
-        padding-bottom: 100px; /* More space for mobile navbar */
+        padding-bottom: 100px;
     }
 
     .middle-content {
         padding-top: 20px;
         padding-left: 10px;
         padding-right: 10px;
-        padding-bottom: 15px; /* Ensure bottom padding on mobile */
+        padding-bottom: 15px;
     }
 
     .navbar {
@@ -83,18 +75,18 @@ body {
     }
 
     .video-size video {
-        max-height: 70vh;  /* Slightly smaller max-height on mobile */
+        max-height: 70vh;
         width: 100%;
     }
 
     .button-container {
-        gap: 1rem;  /* Smaller gap on mobile */
-        margin-top: 1.5rem; /* Slightly less space above buttons on mobile */
+        gap: 1rem;
+        margin-top: 1.5rem;
     }
 
     .share-link, .refresh-button, .grid-button {
-        font-size: 0.9em;  /* Slightly smaller text on mobile */
-        padding: 0.4rem 0.8rem; /* Slightly smaller padding */
+        font-size: 0.9em;
+        padding: 0.4rem 0.8rem;
     }
 
     .video-grid {
@@ -106,11 +98,10 @@ body {
 
 @media (width: 1024px) {
     .video-size video {
-        width: 100%; /* Ensure width is still 100% */
+        width: 100%;
     }
 }
 
-/* Grid Styles */
 .video-grid {
     margin-top: 20px;
     width: 100%;
@@ -124,7 +115,7 @@ body {
     width: 100%;
     position: relative;
     aspect-ratio: 16/9;
-    overflow: hidden;  /* Add sharp edges to grid videos */
+    overflow: hidden;
 }
 
 .video-grid-item video {
@@ -140,7 +131,6 @@ body {
     color: green;
 }
 
-/* Modal Styles */
 .video-modal {
     display: none;
     position: fixed;

@@ -28,7 +28,6 @@
           <label for="message">Message (maximum 50 characters):</label>
           <textarea id="message" name="message" maxlength="50" required></textarea>
           
-          <!-- Turnstile Widget -->
           <div class="cf-turnstile" data-sitekey="0x4AAAAAAA0uvojr--a3xihU"></div>
           
           <button type="submit">Submit</button>

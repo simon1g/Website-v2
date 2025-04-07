@@ -31,7 +31,6 @@
                 <a href="https://myanimelist.net/animelist/Simon_1g" traget="_blank">My Anime List</a>
             </div>
         </div>
-
     </div>
 </body>
 </html>

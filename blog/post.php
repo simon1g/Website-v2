@@ -1,4 +1,13 @@
-<?php require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php'); ?>
+<?php 
+require_once($_SERVER['DOCUMENT_ROOT'] . '/config.php');
+session_start();
+
+// Redirect to blog index if not logged in
+if (!isset($_SESSION['blog_access']) || !$_SESSION['blog_access']) {
+    header('Location: /blog/');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

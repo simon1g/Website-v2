@@ -1,4 +1,13 @@
 <?php
+session_start();
+
+// Check if user is logged in
+if (!isset($_SESSION['blog_access']) || !$_SESSION['blog_access']) {
+    http_response_code(401);
+    echo json_encode(['error' => 'Unauthorized']);
+    exit;
+}
+
 header('Content-Type: application/json');
 
 $posts_dir = __DIR__ . '/../posts/';

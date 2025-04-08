@@ -6,3 +6,4 @@ A personal website of mine!
 - IDK
 - Matrix visual effects
 - And places i post a lot!
+- Massive amount of shitpost collected over years (handpicked by ___yours truly___)

@@ -1,7 +1,0 @@
-{
-    "id": "post_167ee675d70a87",
-    "date": "2025-04-03",
-    "time": "12:47:57",
-    "content": "ok i see why my images aren't uploading php has a file size limit and it's like 1mb so and i cannot easily change it cuz of the way i host in in a docker image",
-    "images": []
-}

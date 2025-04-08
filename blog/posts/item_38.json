@@ -1,5 +1,0 @@
-{
-    "date": "2025-03-27",
-    "time": "15:43:00",
-    "content": "ok i figured a way so i can run an ollama on my pc and my discord bot can communicate using an api with my pc, in short i made it so the bot.py runnining on my home server using post sends a message and and after that it get the respond sending it, i had to make an environment variable for ollama so it listens to all ip... make a firewall exception and it's still not perfect since i have to start the ollama server on my pc manually!!! UNACCAPTABLE. plan going forward is to get a python script that runs on startup of windows and listens to bot.py reqests so it can start, post, get and shutdown the date from ollama while i have to do nothing... get to it... or not idk me whatever rn cuz im kinda tired after... IT WORKS THO "
-}

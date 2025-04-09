@@ -66,6 +66,83 @@ session_start();
             transition: opacity 1.5s;
         }
     </style>
+    <script>
+        if (localStorage.getItem('hasSeenDissolve')) {
+            document.addEventListener('DOMContentLoaded', function() {
+                document.documentElement.style.background = '#ffffff';
+                document.body.style.background = '#ffffff';
+                document.body.className = 'blank';
+                document.body.innerHTML = '<div class="blank-state"></div>';
+                
+                setTimeout(() => {
+                    const messageContainer = document.createElement('div');
+                    messageContainer.style.position = 'fixed';
+                    messageContainer.style.top = '50%';
+                    messageContainer.style.left = '50%';
+                    messageContainer.style.transform = 'translate(-50%, -50%)';
+                    messageContainer.style.display = 'flex';
+                    messageContainer.style.flexDirection = 'column';
+                    messageContainer.style.alignItems = 'center';
+                    messageContainer.style.gap = '20px';
+                    messageContainer.style.fontFamily = 'Arial, sans-serif';
+                    
+                    const firstMessage = document.createElement('div');
+                    firstMessage.style.color = '#000000';
+                    firstMessage.style.fontSize = '24px';
+                    firstMessage.style.transition = 'opacity 2s';
+                    firstMessage.style.opacity = '0';
+                    firstMessage.textContent = 'still here huh?';
+                    
+                    const secondMessage = document.createElement('div');
+                    secondMessage.style.color = '#000000';
+                    secondMessage.style.fontSize = '24px';
+                    secondMessage.style.opacity = '0';
+                    secondMessage.style.transition = 'opacity 2s';
+                    secondMessage.textContent = 'hmmm sooo how\'s your day?';
+                    
+                    messageContainer.appendChild(firstMessage);
+                    messageContainer.appendChild(secondMessage);
+                    document.body.appendChild(messageContainer);
+                    
+                    // Fade in first message
+                    setTimeout(() => {
+                        firstMessage.style.opacity = '1';
+                        // Fade in second message after 4 seconds
+                        setTimeout(() => {
+                            secondMessage.style.opacity = '1';
+                            // Close page after both messages are shown
+                            setTimeout(() => {
+                                window.close();
+                            }, 2000);
+                        }, 4000);
+                    }, 100);
+                }, 10000);
+            });
+        } else {
+            document.addEventListener('DOMContentLoaded', function() {
+                const overlay = document.querySelector('.dissolve-overlay');
+                const messages = document.querySelectorAll('.message-line');
+                const content = document.querySelector('.content-wrapper');
+                
+                setTimeout(() => {
+                    content.classList.add('fade-out');
+                    overlay.style.opacity = '1';
+                    localStorage.setItem('hasSeenDissolve', 'true');
+                    
+                    messages.forEach((msg, index) => {
+                        setTimeout(() => {
+                            msg.style.opacity = '1';
+                        }, (index * 3000) + 2000);
+                    });
+
+                    // Redirect to blank state after messages
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 12000);
+                }, 5000);
+            });
+        }
+    </script>
 </head>
 <body>
     <div class="dissolve-overlay"></div>
@@ -101,24 +178,5 @@ session_start();
     </div>
     <script src="/blog/js/infinite-scroll.js"></script>
     <script src="/blog/js/lightbox.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const overlay = document.querySelector('.dissolve-overlay');
-            const messages = document.querySelectorAll('.message-line');
-            const content = document.querySelector('.content-wrapper');
-            
-            setTimeout(() => {
-                content.classList.add('fade-out');
-                overlay.style.opacity = '1';
-                
-                // Show messages sequentially
-                messages.forEach((msg, index) => {
-                    setTimeout(() => {
-                        msg.style.opacity = '1';
-                    }, (index * 3000) + 2000); // Start after initial fade
-                });
-            }, 5000); // Changed from 10000 to 5000
-        });
-    </script>
 </body>
 </html>

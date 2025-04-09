@@ -236,6 +236,80 @@ h1 {
     display: block;
 }
 
+.dissolve-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 2s;
+}
+
+.end-message {
+    position: fixed;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    color: black;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.message-line {
+    opacity: 0;
+    transition: opacity 1.5s;
+}
+
+.content-wrapper {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 2s;
+    position: relative;
+    z-index: 1;
+}
+
+.content-wrapper.fade-out {
+    opacity: 0;
+}
+
+.blank-state {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #ffffff;
+    z-index: 99999;
+    color: #000000;
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+}
+
+body.blank {
+    background: #ffffff;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.blank {
+    background: #ffffff;
+    color: #000000;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 @media (min-width: 768px) {
     .blog-content {
         width: 80%;

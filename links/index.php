@@ -23,10 +23,10 @@
         <div class="middle-content">
             <h1 class="ascii-title"><?php echo ascii_border('Links to my pages'); ?></h1>
             <div class="ascii-links">
-                <a href="https://new.reddit.com/user/_ssSimon_" target="_blank">Reddit</a>
-                <a href="https://soundcloud.com/s-s-simon-570186344" target="_blank">SoundCloud</a>
-                <a href="https://x.com/Simon_1g" target="_blank">Twitter</a>
-                <a href="https://www.youtube.com/@s_s_Simon" target="_blank">YouTube</a>
+                <a href="https://www.reddit.com/user/_ssSimon_/" target="_blank">Reddit</a>
+                <a href="https://soundcloud.com/simon1g-xyz" target="_blank">SoundCloud</a>
+                <a href="https://x.com/simon1g_" target="_blank">Twitter</a>
+                <a href="https://www.youtube.com/@imon1G" target="_blank">YouTube</a>
                 <a href="https://bsky.app/profile/simon1g.xyz" target="_blank">BlueSky</a>
                 <a href="https://myanimelist.net/animelist/Simon_1g" target="_blank">My Anime List</a>
             </div>
